@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-au" lang="en-au" dir="ltr">
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		<meta name="keywords" content="jGauge, gauge, dial, dial gauge, meter, metre, gadget, widget, jQuery, JavaScript, AJAX" />
+		<meta name="description" content="jGauge is a dial gauge that is simple, powerful, and 100% javascript and css." />
+		<meta name="author" content="Darian Cabot" />
+		
+		<title>jGauge 0.3.0 Alpha 3 - Documentation</title>
+		
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
+		<link rel="index" href="http://www.dariancabot.com/projects-2/jgauge/" title="jGauge" />
+		<link rel="stylesheet" href="css/page.css" type="text/css" />
+		
+		<!-- Google Analytics -->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-18052326-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<div id="header"><div id="title"><a id="title" href="http://www.dariancabot.com"><img src="img/title.png" width="243" height="73" alt="dariancabot.com" /></a></div></div>
+		
+		<div id="main">
+			<h1>jGauge 0.3.0 Alpha 3 - Documentation</h1>
+			<p><em>jGauge is a dial gauge that is simple, powerful, and 100% JavaScript!</em></p>
+			<p>Please note this is an alpha release. Version 0.3.0 is still under development use with caution! ;-)  If you find jGauge useful a link back to my blog is appreciated.</p>
+			<p><a href="http://www.dariancabot.com/projects-2/jgauge/">See the main project page</a> for more information and downloads.</p>
+			<p><a href="index.html">See the live demostration</a> to experience jGauge in all it's glory! :-D</p>
+			
+			
+			<h2>Getting Started</h2>
+			
+			<p>Include these files in the head of your HTML:</p>		
+			<p class="code">
+				&lt;link rel="stylesheet" href="css/gauge_screen.css" type="text/css" /&gt;<br />
+				&lt;!--[if IE]&gt;&lt;script type="text/javascript" language="javascript" src="js/excanvas.min.js"&gt;&lt;/script&gt;&lt;![endif]--&gt;<br />
+				&lt;script language="javascript" type="text/javascript" src="js/jquery-1.4.2.min.js"&gt;&lt;/script&gt;<br />
+				&lt;script language="javascript" type="text/javascript" src="js/jQueryRotate.min.js"&gt;&lt;/script&gt;<br />
+				&lt;script language="javascript" type="text/javascript" src="js/jgauge-0.3.0.a2.js"&gt;&lt;/script&gt;
+			</p>
+			
+			<p>In the body of your HTML include a placeholder DIV:</p>
+			<p class="code">
+				&lt;div id="jGaugeDemo" class="jgauge"&gt;&lt;/div&gt;
+			</p>
+			
+			<p>Use JavaScript to create new jGauge instance and point it to our placeholder DIV.</p>
+			<p>Then use the jQuery ready() function to initialise the jGauge:</p>
+			
+			<p class="code">
+				&lt;script type="text/javascript"&gt;<br />
+				&nbsp;&nbsp;&nbsp;var myGauge = new jGauge(); // Create a new jGauge.<br />
+				&nbsp;&nbsp;&nbsp;myGauge.gaugeId = 'jGaugeDemo'; // Link the new jGauge to the placeholder DIV.<br />
+				&nbsp;&nbsp;&nbsp;<br />
+				&nbsp;&nbsp;&nbsp;// This function is called by jQuery once the page has finished loading.<br />
+				&nbsp;&nbsp;&nbsp;$(document).ready(function(){<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myGauge.initialise(); // Put the jGauge on the page by initialising it.<br />
+				&nbsp;&nbsp;&nbsp;});<br />
+				&lt;/script&gt;
+			</p>
+			
+			<p>We're done! Now you can change the gauge value like this (obviously this works well with AJAX):</p>
+			
+			<p class="code">
+				myGauge.setValue(7.35);
+			</p>
+			
+			
+			<h2>Parameters</h2>
+			<p>This table lists all the available parameters to customise jGauge.  When a new jGauge is created, the default values are used unless you override them with your own settings.</p>
+			<p>Please note: <strong>.gaugeId</strong> must be set and unique for each jGauge instance!</p>
+			
+			<table cellspacing="0">
+				<tr>
+					<th>Parameter</th>
+					<th>Default value</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><strong>.gaugeId</strong></td>
+					<td>'' <em>(nothing)</em></td>
+					<td>
+						The 'id' attribute of the placeholder DIV.<br />
+						Must be set and unique for each jGauge instance.
+					</td>
+				</tr>
+				<tr>
+					<td><strong>.gaugeLimitAction</strong></td>
+					<td>limitAction.autoRange</td>
+					<td>What to do when the needle hits the limit.</td>
+				</tr>
+				<tr>
+					<td><strong>.gaugeSegmentStart</strong></td>
+					<td>-20</td>
+					<td>Relative to 0&deg; (pointing right / 3-o-clock).</td>
+				</tr>
+				<tr>
+					<td><strong>.gaugeSegmentEnd</strong></td>
+					<td>20</td>
+					<td>Relative to 0&deg; (pointing right / 3-o-clock).</td>
+				</tr>
+				<tr>
+					<td><strong>.gaugeImagePath</strong></td>
+					<td>'img/jgauge_face_default.png'</td>
+					<td>Background image path.</td>
+				</tr>
+				<tr>
+					<td><strong>.gaugeWidth</strong></td>
+					<td>160</td>
+					<td>Total width of jGauge.</td>
+				</tr>
+				<tr>
+					<td><strong>.gaugeHeight</strong></td>
+					<td>114</td>
+					<td>Total height of jGauge.</td>
+				</tr>
+				<tr>
+					<td><strong>.needleImagePath</strong></td>
+					<td>'img/jgauge_needle_default.png'</td>
+					<td>Needle image path.</td>
+				</tr>
+				<tr>
+					<td><strong>.needleXOffset</strong></td>
+					<td>0</td>
+					<td>Shift needle position horizontally from center.</td>
+				</tr>
+				<tr>
+					<td><strong>.needleYOffset</strong></td>
+					<td>24</td>
+					<td>Shift needle position vertically from center.</td>
+				</tr>
+				<tr>
+					<td><strong>.labelXOffset</strong></td>
+					<td>0</td>
+					<td>Shift value label position horizontally from center.</td>
+				</tr>
+				<tr>
+					<td><strong>.labelYOffset</strong></td>
+					<td>20</td>
+					<td>Shift value label position vertically from center.</td>
+				</tr>
+				<tr>
+					<td><strong>.labelPrefix</strong></td>
+					<td>'' <em>(nothing)</em></td>
+					<td>Prefix for the value label (i.e. '$').</td>
+				</tr>
+				<tr>
+					<td><strong>.labelSuffix</strong></td>
+					<td>'' <em>(nothing)</em></td>
+					<td>Suffic for the value label (i.e. ' kW')</td>
+				</tr>
+				<tr>
+					<td><strong>.labelPrecision</strong></td>
+					<td>1</td>
+					<td>Value label rounding decimal places.</td>
+				</tr>
+				<tr>
+					<td><strong>.tickCount</strong></td>
+					<td>11</td>
+					<td>Number of tick marks around the gauge face.</td>
+				</tr>
+				<tr>
+					<td><strong>.tickStart</strong></td>
+					<td>0</td>
+					<td>Value of the first tick mark.</td>
+				</tr>
+				<tr>
+					<td><strong>.tickEnd</strong></td>
+					<td>10</td>
+					<td>Value of the last tick mark.</td>
+				</tr>
+				<tr>
+					<td><strong>.tickColour</strong></td>
+					<td>'rgba(255, 255, 255, 1)'</td>
+					<td>Tick mark colour and alpha (opacity).</td>
+				</tr>
+				<tr>
+					<td><strong>.tickThickness</strong></td>
+					<td>3</td>
+					<td>Tick mark thickness.</td>
+				</tr>
+				<tr>
+					<td><strong>.tickRadius</strong></td>
+					<td>76</td>
+					<td>Tick mark radius (distance from gauge center point).</td>
+				</tr>
+				<tr>
+					<td><strong>.tickSubDivisions</strong></td>
+					<td>5</td>
+					<td><em>Future use</em></td>
+				</tr>
+				<tr>
+					<td><strong>.tickSubColour</strong></td>
+					<td>'rgba(255, 255, 255, 0.5)'</td>
+					<td><em>Future use</em></td>
+				</tr>
+				<tr>
+					<td><strong>.tickSubThickness</strong></td>
+					<td>1</td>
+					<td><em>Future use</em></td>
+				</tr>
+				<tr>
+					<td><strong>.tickLabelPrecision</strong></td>
+					<td>1</td>
+					<td>Rounding decimal places for tick labels.</td>
+				</tr>
+				<tr>
+					<td><strong>.tickLabelRadius</strong></td>
+					<td>65</td>
+					<td>Tick label radius (distance from gauge center point).</td>
+				</tr>
+				<tr>
+					<td><strong>.rangeRadius</strong></td>
+					<td>55</td>
+					<td>Range arc radius (distance from gauge center point).</td>
+				</tr>
+				<tr>
+					<td><strong>.rangeThickness</strong></td>
+					<td>36</td>
+					<td>Range arc thickness (spread of the arc outwards).</td>
+				</tr>
+				<tr>
+					<td><strong>.rangeStart</strong></td>
+					<td>-24</td>
+					<td>Range start point as an angle relative to 0&deg; (pointing right).</td>
+				</tr>
+				<tr>
+					<td><strong>.rangeEnd</strong></td>
+					<td>25</td>
+					<td>Range end point as an angle relative to 0&deg; (pointing right).</td>
+				</tr>
+				<tr>
+					<td><strong>.rangeColour</strong></td>
+					<td>'rgba(255, 32, 0, 0.2)'</td>
+					<td>Colour and alpha (opacity) of the range arc.</td>
+				</tr>
+			</table>
+			
+			
+			<h2>Functions</h2>
+			<p>This table lists the functions to use jGauge.  The most important function is <strong>.initialise()</strong> which must be called on each new jGauge.  Once this is done <strong>.setValue()</strong> can be used to change gauge value (this updates the value label and animates the needle).</p>
+			
+			<table cellspacing="0">
+				<tr>
+					<th>Function</th>
+					<th>Description</th>
+					<th>Example usage</th>
+				</tr>
+				<tr>
+					<td><strong>.initialise()</strong></td>
+					<td>Initialises the gauge and puts it on the page.</td>
+					<td class="code">myGauge<strong>.initialise()</strong>;</td>
+				</tr>
+				<tr>
+					<td><strong>.setValue()</strong></td>
+					<td>Sets or updates the gauge value.</td>
+					<td class="code">myGauge<strong>.setValue(</strong>5.2<strong>)</strong>;</td>
+				</tr>
+				<tr>
+					<td><strong>.getValue()</strong></td>
+					<td>Gets the current gauge value.</td>
+					<td class="code">var myValue = myGauge<strong>.getValue()</strong>;</td>
+				</tr>
+				<tr>
+					<td><strong>.updateTicks()</strong></td>
+					<td>Updates the tick marks and tick labels (call after changing tick parameters).</td>
+					<td class="code">
+						// Make a change to the ticks.<br />
+						myGauge.tickCount = 6;<br />
+						// Now we must update ticks.<br />
+						myGauge<strong>.updateTicks()</strong>;
+					</td>
+				</tr>
+				<tr>
+					<td><strong>.updateRange()</strong></td>
+					<td>Updates the range (call after changing range parameters).</td>
+					<td class="code">
+						// Make a change to the range.<br />
+						myGauge.rangeStart = -20;<br />
+						// Now we must update range.<br />
+						myGauge<strong>.updateRange()</strong>;
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
+
