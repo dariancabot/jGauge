@@ -8,11 +8,31 @@ VERSION 0.4.0
 This is a very early and unstable release "Version 0.4.0".
 All future jGauge development will be hosted on github.
 
+The repo is a roughly thrown together version of jGauge that has replaced jQuery with Raphael.  I'm aiming for better browser compatibility and a more modular/OO code design.  It's very messy and experimental as I'm still deciding the best way to add features and flexibility while keeping it's implementation simple for developers.
+
+Initially, I'll need to spend some time putting the planned road-map features for version 0.4.0 into the code (it's still incomplete) so there is a good starting point. I'm hoping to get this done on the weekend (15 May).
+
 
 VERSION 0.3.0
 -------------
 For a more stable realease, please try version 0.3.0 alpha 3 hosted on Google code.
 Google code will continue to host any older release, but will no longer be updated.
+
+
+ROAD-MAP
+-------
+jGauge version 0.4.0 is currently being developed and is a complete overhaul of version 0.3.0.
+So far there changes being made are:
+
+* jQuery, jQueryRotate, and canvas have been dropped.
+* I'm now using the Raphael JavaScript? framework which is much more suitable.
+* There is no longer dependency on the CSS reference making jGauge much more 'self-contained'.
+* Graphics are vector by default.
+* I've shuffled around the internal object relationships to allow for multiple needles and lables.
+* Plans for an automatic secondary needle/marker dynamically showing min, max, avg, etc.
+* Plans for an automatic secondary range dynamically showing min and max value.
+* So far all these changes have made jGauge's total file size 30% smaller!
+* Version 0.4.0 also offers greater compatibility and does this without hacky JavaScript exceptions for IE.
 
 
 For more information on the jGauge project see: http://www.jgauge.com
