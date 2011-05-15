@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-au" lang="en-au" dir="ltr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="jGauge, gauge, dial, dial gauge, meter, metre, speedo, taco, speedometer, tacometer, gadget, widget, JavaScript, jQuery, AJAX" />
+		<meta name="description" content="jGauge is an open-source JavaScript dial gauge designed to be simple and powerful!" />
+		<meta name="author" content="Darian Cabot (http://www.dariancabot.com/)" />
+		<meta name="copyright" content="Copyright (c) 2010-2011 Darian Cabot, http://www.dariancabot.com" />
+		<title>jGauge 0.4.0 WIP - Live Demonstration</title>
+		<link rel="stylesheet" href="demo.css" type="text/css" />
+		
+		<!-- INCLUDE THE FOLLOWING JGAUGE REQUIREMENTS... -->
+		<script language="javascript" type="text/javascript" src="raphael-min.js"></script> <!-- Raphael 1.5.2 - JavaScript Vector Library -->
+		<script language="javascript" type="text/javascript" src="jgauge.js"></script> <!-- jGauge JavaScript. -->
+	</head>
+	<body onload="ready();">
+		
+		<div id="main">
+			<h1>jGauge 0.4.0 WIP - Live Demonstration</h1>
+			<p><em>jGauge is an open-source JavaScript dial gauge designed to be simple and powerful!</em></p>
+			<p>Please note this is a very early and unstable release. Version 0.4.0 is still under development use with caution! ;-)  If you find jGauge useful a link back to my blog is appreciated.</p>
+			<p><a href="http://www.jgauge.com/">See the main project page</a> for more information and downloads.</p>
+			<p><a href="doc.html">See the documentation</a> for developer references and usage examples.</p>
+			
+			<!-- This DIV is the placeholder for our example jGauge -->
+			<div id="jGaugeDemo1" style="float: left; margin: 10px 0 10px 25px;"></div>
+			<div id="jGaugeDemo2" style="float: left; margin: 10px 0 10px 25px;"></div>
+			<div id="jGaugeDemo3" style="float: left; margin: 10px 0 10px 25px;"></div>
+			
+			<!-- Clear the float -->
+			<div class="break"></div>
+			
+			<!-- Create some simple javascript link/buttons for testing -->
+			<p>Set the value:</p>
+			<div class="buttons">
+				<a href="javascript:setVal(0)">0</a> 
+				<a href="javascript:setVal(2.5)">2.5</a> 
+				<a href="javascript:setVal(5)">5</a> 
+				<a href="javascript:setVal(8)">8</a> 
+				<a href="javascript:setVal(10)">10</a>
+				<div class="break"></div>
+			</div>
+			
+			<p>Bump the value:</p>
+			<div class="buttons">
+				<a href="javascript:bumpVal(0.1)">+ 0.1</a> 
+				<a href="javascript:bumpVal(1)">+ 1</a> 
+				<a href="javascript:bumpVal(100)">+ 100</a> 
+				<a href="javascript:bumpVal(1000)">+ 1000</a> 
+				<a href="javascript:bumpVal(1000000)">+ 10<sup>6</sup></a> 
+				<a href="javascript:bumpVal(1000000000)">+ 10<sup>9</sup></a> 
+				<a href="javascript:bumpVal(1000000000000)">+ 10<sup>12</sup></a> 
+				<div class="break"></div>
+			</div>
+			<div class="buttons">
+				<a href="javascript:bumpVal(-0.1)">- 0.1</a> 
+				<a href="javascript:bumpVal(-1)">- 1</a> 
+				<a href="javascript:bumpVal(-100)">- 100</a> 
+				<a href="javascript:bumpVal(-1000)">- 1000</a> 
+				<a href="javascript:bumpVal(-1000000)">- 10<sup>6</sup></a> 
+				<a href="javascript:bumpVal(-1000000000)">- 10<sup>9</sup></a> 
+				<a href="javascript:bumpVal(-1000000000000)">- 10<sup>12</sup></a> 
+				<div class="break"></div>
+			</div>
+			
+			<p>Set the number of ticks:</p>
+			<div class="buttons">
+				<a href="javascript:setTickCount(0)">0 (None)</a> 
+				<a href="javascript:setTickCount(2)">2</a> 
+				<a href="javascript:setTickCount(5)">5</a> 
+				<a href="javascript:setTickCount(6)">6</a> 
+				<a href="javascript:setTickCount(11)">11</a> 
+				<div class="break"></div>
+			</div>
+			
+			<p>Set the range:</p>
+			<div class="buttons">
+				<a href="javascript:setRange(55, 36, -24, 25, 'rgba(255, 32, 0, 0.2')">Demo 1</a> 
+				<a href="javascript:setRange(55, 36, -205, -155, 'rgba(0, 255, 32, 0.3')">Demo 2</a> 
+				<a href="javascript:setRange(77, 6, -24, 25, 'rgba(255, 96, 32, 1')">Demo 3</a> 
+				<div class="break"></div>
+			</div>
+			
+			
+			<!-- This script block defines the gauge parameters and includes some simple
+			     functions to test the jGauge with (the above links use this) -->
+			<script type="text/javascript">
+				
+			    // DEMOGAUGE1 - A very basic example...
+				var demoGauge1 = new jGauge('jGaugeDemo1'); // Create a new jGauge.
+				
+				// DEMOGAUGE2 - Using the new binary prefixing...
+				var demoGauge2 = new jGauge('jGaugeDemo2'); // Create a new jGauge.
+				demoGauge2.label.suffix = 'B'; // Make the value label watts.
+				demoGauge2.autoPrefix = autoPrefix.binary; // Use binary prefixing.
+				demoGauge2.ticks.count = 5;
+				demoGauge2.ticks.end = 4;
+				
+				// DEMOGAUGE3 - This gauge shows some more settings and is updated randomly...
+				var demoGauge3 = new jGauge('jGaugeDemo3'); // Create a new jGauge.
+				demoGauge3.autoPrefix = autoPrefix.si; // Use SI prefixing.
+                                demoGauge3.label.precision = 0; // 0 decimals (whole numbers).
+				demoGauge3.label.suffix = 'W'; // Make the value label watts.
+                                demoGauge3.limitAction = limitAction.none;				
+                                demoGauge3.ticks.start = 200;
+                                demoGauge3.ticks.end = 800;
+                                demoGauge3.ticks.count = 7;
+				
+				
+				// This function is called on page load...
+				function ready()
+				{
+					demoGauge1.init(); // Put the jGauge on the page by initializing it.
+					demoGauge2.init(); // Put the jGauge on the page by initializing it.
+					demoGauge3.init(); // Put the jGauge on the page by initializing it.
+					
+					// Configure demoGauge3 for random value updates.
+					demoGauge3.setValue(500, demoGauge3.needle[0]);
+					setInterval('randVal()', 500);
+				}
+				
+				// That's all folks! We've created a jGauge and put it on the page! :-D
+				// The following JavaScript functions are for the demonstration.
+				// ----------------------------------------------------------------------
+				
+				
+				// This is a test function that changes the gauge value.
+				function setVal(value)
+				{
+					demoGauge1.setValue(value * 0.5, demoGauge1.needle[1]);
+					demoGauge1.setValue(value, demoGauge1.needle[0]);
+					
+					demoGauge2.setValue(value, demoGauge2.needle[0]);
+				}
+				
+				// This is another test function that changes the gauge value.
+				function bumpVal(value)
+				{
+					dG1v = demoGauge1.value;
+					demoGauge1.setValue((dG1v + value) * 0.5, demoGauge1.needle[1]);
+					demoGauge1.setValue(dG1v + value, demoGauge1.needle[0]);
+					
+					demoGauge2.setValue(demoGauge2.value + value, demoGauge2.needle[0]);
+				}
+				
+				// This is a test function that changes the number of ticks.
+				function setTickCount(value)
+				{
+					demoGauge1.ticks.count = value;
+					demoGauge1.updateTicks();
+					
+					demoGauge2.ticks.count = value;
+					demoGauge2.updateTicks();
+				}
+				
+				// This is a test function that changes the range styling.
+				function setRange(radius, thickness, start, end, color)
+				{
+					demoGauge1.range.radius = radius;
+					demoGauge1.range.thickness = thickness;
+					demoGauge1.range.start = start;
+					demoGauge1.range.end = end;
+					demoGauge1.range.color = color;
+					demoGauge1.updateRange();
+					
+					demoGauge2.range.radius = radius;
+					demoGauge2.range.thickness = thickness;
+					demoGauge2.range.start = start;
+					demoGauge2.range.end = end;
+					demoGauge2.range.color = color;
+					demoGauge2.updateRange();
+					
+					demoGauge3.range.radius = radius;
+					demoGauge3.range.thickness = thickness;
+					demoGauge3.range.start = start;
+					demoGauge3.range.end = end;
+					demoGauge3.range.color = color;
+					demoGauge3.updateRange();
+				}
+				
+				// This is our random value function for gauge 3.
+				function randVal()
+				{
+				        var newValue;
+				        
+				        if (Math.random() > 0.8) // Allow needle to randomly pause.
+				        {
+				                newValue = demoGauge3.value + (Math.random() * 100 - 50);
+				                
+				                if (newValue >= demoGauge3.ticks.start && newValue <= demoGauge3.ticks.end)
+				                {
+				                        // newValue is within range, so update.
+				                        demoGauge3.setValue(newValue, demoGauge3.needle[0]);
+				                }
+				        }
+				}
+				
+			</script>
+			
+		</div>
+	</body>
+</html>
+

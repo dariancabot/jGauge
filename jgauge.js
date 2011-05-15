@@ -110,6 +110,7 @@ jGauge = function(id)
         
         
         // Define the jGauge.needle object...
+<<<<<<< HEAD
         var needleDefault =
         {
 		//imagePath: 'img/jgauge_needle_default.png'; // Needle image path.
@@ -171,6 +172,73 @@ jGauge = function(id)
         };
         
         this.range = rangeDefault;
+=======
+        function needle()
+        {
+                var ndl = this;
+                //ndl.imagePath = 'img/jgauge_needle_default.png'; // Needle image path.
+                ndl.rSet; // The Raphael set that contains the SVG for drawing the needle graphic.
+                ndl.speed = 750; // Speed of the needle animation in milliseconds.
+                ndl.limitAction = limitAction.autoRange; // What to do when the needle hits the limit.
+                ndl.xPivot = 100; // Needle pivot point - horizontal position.
+                ndl.yPivot = 100; // Needle pivot point - vertical position.
+        }
+        
+        // Add the needle to the jGauge needle array.
+        this.needle = [];
+        this.needle[0] = new needle();
+        this.needle[1] = new needle(); // DEV - second needle.
+        
+        // Define the jGauge.label object...
+        function label()
+        {
+                var lbl = this;
+                lbl.rText; // The Raphael text object.
+                lbl.color = '#144b66';
+                lbl.precision = 1; // Value label rounding decimal places.
+                lbl.prefix = ''; // Prefix for the value label (i.e. '$').
+                lbl.suffix = ''; // Suffic for the value label (i.e. '&deg;C')
+                lbl.xOffset = 0; // Shift label horizontally from center.
+                lbl.yOffset = 35; // Shift label vertically from center.
+        }
+        
+        // Add the label object to the jGauge object.
+        this.label = new label();
+        
+        // Define the jGauge.label object...
+        function ticks()
+        {
+                var tks = this;
+                tks.count = 11; // Number of tick marks around the gauge face.
+                tks.countOld = 11; // (Internal use) Remembers how many tick previously for cleanring.
+                tks.start = 0; // Value of the first tick mark.
+                tks.end = 10; // Value of the last tick mark.
+                tks.color = 'rgba(0, 96, 128, 0.125)'; // Tick mark color.
+                tks.thickness = 3; // Tick mark thickness.
+                tks.radius = 95; // Tick mark radius (from gauge center point).
+                tks.subDivisions = 5; // # Future use #.
+                tks.subColor = 'rgba(255, 255, 255, 0.5)'; // # Future use #.
+                tks.subThickness = 1; // # Future use #.
+                tks.labelEnabled = true; // # Future use #.
+                tks.labelPrecision = 1; // Rounding decimals for tick labels.
+                tks.labelRadius = 82; // Tick label radius (from gauge center).
+        }
+        
+        // Add the ticks object to the jGauge object.
+        this.ticks = new ticks();
+        
+        function range()
+        {
+                var rng = this;
+                rng.radius = 55; // Range arc radius (from gauge center).
+                rng.thickness = 36; // Range arc thickness (spread of the arc outwards).
+                rng.start = -24; // Range start point as an angle relative to 0deg (pointing right).
+                rng.end = 25; // Range end point as an angle relative to 0deg (pointing right).
+                rng.color = 'rgba(255, 32, 0, 0.2)'; // Color and alpha (opacity) of the range arc.
+        }
+        
+        this.range = new range();
+>>>>>>> 9be38f0d50ba59503c701a32f2949d110bebb190
         
         this.value = 0;
         
@@ -206,14 +274,23 @@ jGauge.prototype.init = function()
         // Wipe the slate clean in case gauge already initialized.
         while (this.root.childNodes[0])
         {
+<<<<<<< HEAD
         	this.root.removeChild(this.root.childNodes[0]);
+=======
+                this.root.removeChild(this.root.childNodes[0]);
+>>>>>>> 9be38f0d50ba59503c701a32f2949d110bebb190
         }
         
         this.paper = Raphael(this.id, this.width, this.height);
         this.paper.clear();
         
+<<<<<<< HEAD
         // Fill the paper with a background colour to make it more obvious for dev...
         var c1 = this.paper.rect(0, 0, this.width, this.height).attr({fill: '#8bf', 'stroke-width': '0'});
+=======
+        // Fill the paper with blue to make it more obvious for dev...
+        //var c1 = this.paper.rect(0, 0, this.width, this.height).attr({fill: '#fea', 'stroke-width': '0'});
+>>>>>>> 9be38f0d50ba59503c701a32f2949d110bebb190
         
         // Draw the gauge face...
         var gaugeFace = this.paper.set();
