@@ -110,7 +110,7 @@ jGauge = function(id)
         
         
         // Define the jGauge.needle object...
-<<<<<<< HEAD
+
         var needleDefault =
         {
 		//imagePath: 'img/jgauge_needle_default.png'; // Needle image path.
@@ -172,7 +172,7 @@ jGauge = function(id)
         };
         
         this.range = rangeDefault;
-=======
+
         function needle()
         {
                 var ndl = this;
@@ -238,7 +238,6 @@ jGauge = function(id)
         }
         
         this.range = new range();
->>>>>>> 9be38f0d50ba59503c701a32f2949d110bebb190
         
         this.value = 0;
         
@@ -274,23 +273,18 @@ jGauge.prototype.init = function()
         // Wipe the slate clean in case gauge already initialized.
         while (this.root.childNodes[0])
         {
-<<<<<<< HEAD
         	this.root.removeChild(this.root.childNodes[0]);
-=======
                 this.root.removeChild(this.root.childNodes[0]);
->>>>>>> 9be38f0d50ba59503c701a32f2949d110bebb190
         }
         
         this.paper = Raphael(this.id, this.width, this.height);
         this.paper.clear();
         
-<<<<<<< HEAD
         // Fill the paper with a background colour to make it more obvious for dev...
         var c1 = this.paper.rect(0, 0, this.width, this.height).attr({fill: '#8bf', 'stroke-width': '0'});
-=======
+
         // Fill the paper with blue to make it more obvious for dev...
         //var c1 = this.paper.rect(0, 0, this.width, this.height).attr({fill: '#fea', 'stroke-width': '0'});
->>>>>>> 9be38f0d50ba59503c701a32f2949d110bebb190
         
         // Draw the gauge face...
         var gaugeFace = this.paper.set();
