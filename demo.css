@@ -6,6 +6,9 @@
  * http://www.dariancabot.com/
  * 
  * Date: 27 October 2010
+ *
+ * Modified By Rohit Badwaik
+ * Fixed position problems, still range position is yet to be fixed. :-(
  */
 
 *
@@ -75,6 +78,7 @@ a:hover
 #main
 {
 	width: 800px;
+	align: center !important;
 	margin: 20px auto;
 }
 
@@ -165,4 +169,64 @@ td
 	top: 0;
 	width: 100%;
 	z-index: 2000;
+}
+
+#jGaugeDemo1,#jGaugeDemo2,#jGaugeDemo3  {
+	position: relative;
+	
+}
+
+div#jGaugeDemo1 svg, #jGaugeDemo1-canvas-ticks, div#jGaugeDemo2 svg, #jGaugeDemo2-canvas-ticks, div#jGaugeDemo3 svg, #jGaugeDemo3-canvas-ticks  {
+	position: absolute;
+	margin-right: -70px;
+    margin-top: 170px;
+	right: 0;
+	top: 0;
+	
+}
+#jGaugeDemo1-canvas-ranges, #jGaugeDemo2-canvas-ranges, #jGaugeDemo3-canvas-ranges{
+	
+	position: absolute;
+	right: -5px;
+	bottom: 0;
+	transform: translateX(70px) translateY(165px) rotate(-10deg);
+	-moz-transform:translateX(70px) translateY(165px) rotate(-10deg);
+	-webkit-transform: translateX(70px) translateY(165px) rotate(-10deg);
+}
+
+div#jGaugeDemo1 {
+	transform: 			scale(1) translateY(-150px) translateX(0px);
+	-moz-transform: 	scale(1) translateY(-150px) translateX(0px);
+	-webkit-transform:  scale(1) translateY(-150px) translateX(0px);
+}
+
+div#jGaugeDemo2 {
+	transform: scale(1) translateY(-150px) translateX(0px);
+	-moz-transform: scale(1) translateY(-150px) translateX(0px);
+	-webkit-transform: scale(1) translateY(-150px) translateX(0px);
+}
+
+div#jGaugeDemo3 {
+	transform: scale(1) translateY(-150px) translateX(0px);
+	-moz-transform: scale(1) translateY(-150px) translateX(0px);
+	-webkit-transform: scale(1) translateY(-150px) translateX(0px);
+}
+
+
+#jGaugeDemo1-tick-label {
+	transform: scale(1) translateY(170px) translateX(63px); 
+	-moz-transform: scale(1) translateY(170px) translateX(63px);
+	-webkit-transform: scale(1) translateY(170px) translateX(63px);
+}
+
+#jGaugeDemo2-tick-label {
+	transform: scale(1) translateY(170px) translateX(63px); 
+	-moz-transform: scale(1) translateY(170px) translateX(63px);
+	-webkit-transform: scale(1) translateY(170px) translateX(63px);
+}
+
+#jGaugeDemo3-tick-label {
+	transform: scale(1) translateY(170px) translateX(63px); 
+	-moz-transform: scale(1) translateY(170px) translateX(63px);
+	-webkit-transform: scale(1) translateY(170px) translateX(63px);
 }

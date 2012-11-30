@@ -6,6 +6,8 @@
  * Copyright 2010-2011, Darian Cabot
  * Licensed under the MIT license
  * http://www.jgauge.com/#licence
+ * 
+ * Modified by Rohit on 30/11/2012
  */
 
  
@@ -66,6 +68,16 @@ This may get difficult when assigning a range, label, etc to this needle??
  *
  */
 
+/*
+ * CHANGE LOG: As per 30/11/12
+ * =============================
+ * 
+ * 	- Added Labels on ticks.
+ * 	- Cofigurable items added like label colors, etc.
+ * 	- Fixed positioning issues of ticks, labels, gauges by css. 
+ * 
+ */
+
 
 // Global vars...
 
@@ -91,6 +103,10 @@ jGauge = function(id)
         
         this.paper; // The Raphael paper object.
         
+        this.gaugeOuterRingColor = '90-#d0e0e8-#fff';
+        this.gaugeBodyColor ='90-#fff-#d0e0e8';
+        this.gaugeBorderColor = '#abc';
+        
         this.centerX = 0; // Internal use for positioning elements.
         this.centerY = 0; // Internal use for positioning elements.
         
@@ -107,7 +123,6 @@ jGauge = function(id)
         
         this.siPrefixes = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
         this.binaryPrefixes = this.siPrefixes;
-        
         
         // Define the jGauge.needle object...
 
@@ -148,7 +163,8 @@ jGauge = function(id)
                 countOld: 11, // (Internal use) Remembers how many tick previously for cleanring.
                 start: 0, // Value of the first tick mark.
                 end: 10, // Value of the last tick mark.
-                color: 'rgba(0, 96, 128, 0.125)', // Tick mark color.
+               // color: 'rgba(0, 96, 128, 0.125)', // Tick mark color.
+                color: 'rgba(0, 96, 128, 0.125)',
                 thickness: 3, // Tick mark thickness.
                 radius: 95, // Tick mark radius (from gauge center point).
                 subDivisions: 5, // # Future use #.
@@ -156,7 +172,8 @@ jGauge = function(id)
                 subThickness: 1, // # Future use #.
                 labelEnabled: true, // # Future use #.
                 labelPrecision: 1, // Rounding decimals for tick labels.
-                labelRadius: 82 // Tick label radius (from gauge center).
+                labelRadius: 82, // Tick label radius (from gauge center).
+                tickLabel:''
         };
         
         // Add the ticks object to the jGauge object.
@@ -182,6 +199,8 @@ jGauge = function(id)
                 ndl.limitAction = limitAction.autoRange; // What to do when the needle hits the limit.
                 ndl.xPivot = 100; // Needle pivot point - horizontal position.
                 ndl.yPivot = 100; // Needle pivot point - vertical position.
+                ndl.color1 = '#802060';
+                ndl.color2 = '#3885ab';
         }
         
         // Add the needle to the jGauge needle array.
@@ -200,6 +219,7 @@ jGauge = function(id)
                 lbl.suffix = ''; // Suffic for the value label (i.e. '&deg;C')
                 lbl.xOffset = 0; // Shift label horizontally from center.
                 lbl.yOffset = 35; // Shift label vertically from center.
+                lbl.fontSize = '20';
         }
         
         // Add the label object to the jGauge object.
@@ -248,7 +268,7 @@ jGauge = function(id)
         //this.updateTicks = updateTicks; // Updates the tick marks and tick labels (call after changing tick parameters).
         //this.updateRange = updateRange; // Updates the range (call after changing range parameters).
         //this.prefixNumber = prefixNumber; // Modifies number to SI/binary prefixing (i.e. 5000 becomes 5k).
-}
+};
 
 
 /**
@@ -280,12 +300,6 @@ jGauge.prototype.init = function()
         this.paper = Raphael(this.id, this.width, this.height);
         this.paper.clear();
         
-        // Fill the paper with a background colour to make it more obvious for dev...
-        var c1 = this.paper.rect(0, 0, this.width, this.height).attr({fill: '#8bf', 'stroke-width': '0'});
-
-        // Fill the paper with blue to make it more obvious for dev...
-        //var c1 = this.paper.rect(0, 0, this.width, this.height).attr({fill: '#fea', 'stroke-width': '0'});
-        
         // Draw the gauge face...
         var gaugeFace = this.paper.set();
         
@@ -295,21 +309,21 @@ jGauge.prototype.init = function()
                         'l33.932-5.982l183.23-32.309c-1.769-10.105-2.698-20.5-2.698-31.111c0-98.94,80.206-179.144,179.144-179.144' +
                         'c98.937,0,179.144,80.204,179.144,179.144c0,10.611-0.929,21.006-2.699,31.111l183.23,32.309l33.93,5.982' +
                         'c3.95-22.543,6.022-45.73,6.022-69.402C800,178.92,621.08,0,400.373,0z')
-                        .attr({fill: '90-#d0e0e8-#fff', 'stroke-width': '0'}),
+                        .attr({fill: this.gaugeOuterRingColor, 'stroke-width': '0'}),
                 
                 // Smaller face section.
                 this.paper.path('M400.373,34.451c-201.682,0-365.177,163.495-365.177,365.178' +
                         'c0,21.633,1.894,42.822,5.501,63.42l183.23-32.309c-1.769-10.105-2.698-20.5-2.698-31.111c0-98.939,80.206-179.144,179.144-179.144' +
                         'c98.937,0,179.144,80.205,179.144,179.144c0,10.611-0.929,21.006-2.699,31.111l183.23,32.309c3.608-20.598,5.5-41.787,5.5-63.42' +
                         'C765.548,197.946,602.054,34.451,400.373,34.451z')
-                        .attr({fill: '90-#fff-#d0e0e8', 'stroke-width': '0'}),
+                        .attr({fill: this.gaugeBodyColor, 'stroke-width': '0'}),
                 
                 // Outline.
                 this.paper.path('M400.373,0C179.664,0,0.745,178.92,0.745,399.629c0,23.672,2.073,46.859,6.02,69.402' +
                         'l33.932-5.982l183.23-32.309c-1.769-10.105-2.698-20.5-2.698-31.111c0-98.94,80.206-179.144,179.144-179.144' +
                         'c98.937,0,179.144,80.204,179.144,179.144c0,10.611-0.929,21.006-2.699,31.111l183.23,32.309l33.93,5.982' +
                         'c3.95-22.543,6.022-45.73,6.022-69.402C800,178.92,621.08,0,400.373,0z')
-                        .attr({stroke: '#abc', 'stroke-width': '2'})
+                        .attr({stroke: this.gaugeBorderColor, 'stroke-width': '1'})
         );
         
         gaugeFace.scale(0.245, 0.245, 2.5, 2.5);
@@ -324,7 +338,7 @@ jGauge.prototype.init = function()
         
         // Add the main label...
         this.label.rText = this.paper.text(100, 95, this.label.prefix + this.ticks.start + this.label.suffix)
-        .attr({'font-size': '20', 'fill': this.label.color, 'font-weight': 'bold', 'font-family': 'Arial,Helvetica,sans-serif'});
+        .attr({'font-size': this.label.fontSize, 'fill': this.label.color, 'font-weight': 'bold', 'font-family': 'Arial,Helvetica,sans-serif'});
         
         /*
         htmlString = '<p id="' + this.id + '-label" class="label">' + 
@@ -348,10 +362,10 @@ jGauge.prototype.init = function()
         this.needle[0].rSet.push(
                 this.paper.path('M577.576,373.229c1.272,8.616,1.94,17.43,1.94,26.4s-0.671,17.784-1.946,26.401' +
                         'l157.93-26.401L577.576,373.229z')
-                .attr({fill: '#3885ab', 'stroke-width': '0'}),
+                .attr({fill: this.needle[0].color1, 'stroke-width': '0'}),
                 
                 this.paper.path('M577.57,426.03 L735.5,399.629 L577.576,373.229')
-                .attr({stroke: '#206080'})
+                .attr({stroke: 'grey'})
         );
         
         this.needle[0].rSet.scale(0.245, 0.245, 2.5, 2.5);
@@ -366,17 +380,17 @@ jGauge.prototype.init = function()
         this.needle[1].rSet.push(
                 this.paper.path('M577.576,373.229c1.272,8.616,1.94,17.43,1.94,26.4s-0.671,17.784-1.946,26.401' +
                         'l157.93-26.401L577.576,373.229z')
-                .attr({fill: '#ab3885', 'stroke-width': '0'}),
+                .attr({fill: this.needle[1].color2, 'stroke-width': '0'}),
                 
                 this.paper.path('M577.57,426.03 L735.5,399.629 L577.576,373.229')
-                .attr({stroke: '#802060'})
+                .attr({stroke: 'grey'})
         );
         
         this.needle[1].rSet.scale(0.245, 0.245, 2.5, 2.5);
         
         // Set the needle2 to the lowest value.
         this.setValue(this.ticks.start, this.needle[1]);
-}
+};
 	
 	
 /**
@@ -435,17 +449,19 @@ jGauge.prototype.updateRange = function()
                         alert('Sorry, canvas is not supported by your browser!');
                 }
         }
-}
+};
 
 
 /**
  * Creates the tick marks and labels on the gauge face.
  * @author Darian Cabot
+ * 
+ * Modified by Rohit Badwaik ~ Added the ticks-labels on gauges
  */
 jGauge.prototype.updateTicks = function()
 {
         var gaugeSegmentStep;
-        var htmlString;
+//        var htmlString;
         var c;
         var canvas;
         var ctx;
@@ -462,103 +478,146 @@ jGauge.prototype.updateTicks = function()
         
         // Remove any existing ticks canvas.
         removeElement(this.id + '-canvas-ticks');
-        
+
         // Check if there is actually anything to draw...
         if (this.ticks.count !== 0 || this.ticks.thickness !== 0)
         {
-                // Create ticks by drawing on a canvas...
-                c = document.createElement('canvas');
-                c.setAttribute('id', this.id + '-canvas-ticks');
-                this.root.appendChild(c);
-                
-                // Reference the canvas element we just created.
-                canvas = document.getElementById(this.id + '-canvas-ticks');
-                
-                // Resize canvas...
-                canvas.width = this.width;
-                canvas.height = this.height;
+            // Create ticks by drawing on a canvas...
+            c = document.createElement('canvas');
+            c.setAttribute('id', this.id + '-canvas-ticks');
+            this.root.appendChild(c);
+            
+            // Reference the canvas element we just created.
+            canvas = document.getElementById(this.id + '-canvas-ticks');
+            
+            // Resize canvas...
+            canvas.width = this.width;
+            canvas.height = this.height;
 
-                // Make sure we don't execute when canvas isn't supported
-                if (canvas.getContext)
-                {
-                        // use getContext to use the canvas for drawing
-                        ctx = canvas.getContext('2d');
-                        
-                        // Draw ticks
-                        gaugeSegmentStep = Math.abs(this.segmentStart - this.segmentEnd) / (this.ticks.count - 1);
-                        ctx.strokeStyle = this.ticks.color;
-                        ctx.lineWidth = 5;
-                        
-                        for (i = 0; i <= this.ticks.count - 1; i ++)
-                        {
-                                startAngle = (Math.PI / 180) * (this.segmentStart + (gaugeSegmentStep * i) - (this.ticks.thickness / 2));
-                                endAngle = (Math.PI / 180) * (this.segmentStart + (gaugeSegmentStep * i) + (this.ticks.thickness / 2));
-                                
-                                ctx.beginPath();
-                                
-                                ctx.arc(this.needle[0].xPivot, 
-                                        this.needle[0].yPivot, 
-                                        this.ticks.radius, 
-                                        startAngle, 
-                                        endAngle, 
-                                        false);
-                                
-                                ctx.stroke();
-                        }
+            // Make sure we don't execute when canvas isn't supported
+            if (canvas.getContext)
+            {
+                // use getContext to use the canvas for drawing
+                ctx = canvas.getContext('2d');
+                
+                // Draw ticks
+                gaugeSegmentStep = Math.abs(this.segmentStart - this.segmentEnd) / (this.ticks.count - 1);
+                ctx.strokeStyle = this.ticks.color;
+                ctx.lineWidth = 5;
+                
+                for (var i = 0; i <= this.ticks.count - 1; i ++) {
+                    startAngle = (Math.PI / 180) * (this.segmentStart + (gaugeSegmentStep * i) - (this.ticks.thickness / 2));
+                    endAngle = (Math.PI / 180) * (this.segmentStart + (gaugeSegmentStep * i) + (this.ticks.thickness / 2));
+                    
+                    ctx.beginPath();
+                    
+                    ctx.arc(this.needle[0].xPivot, 
+                            this.needle[0].yPivot, 
+                            this.ticks.radius, 
+                            startAngle, 
+                            endAngle, 
+                            false);
+                    
+                    ctx.stroke();
                 }
-                else
+            } else {
+                // Canvas not supported!
+                if (this.showAlerts === true)
                 {
-                        // Canvas not supported!
-                        if (this.showAlerts === true)
-                        {
-                                alert('Sorry, canvas is not supported by your browser!');
-                        }
+                        alert('Sorry, canvas is not supported by your browser!');
                 }
+            }
         }
         
         
-        // THIRD: Place tick labels on gauge...
+
+        // Much Sophasticated way to print tick-labels.
+        // But unable to assign id and remove them before reprinting. Overlapping issue exists. Working on it. ;-)
+        /*
         
         // Remove the existing tick labels.
-        for (i = 0; i <= this.ticks.countOld - 1; i ++)
-        {
-                removeElement(this.id + '-tick-label-' + i);
+        for (var i = 0; i <= this.ticks.countOld - 1; i ++) {
+        	removeElement(this.id + '-tick-label');
         }
         
-        this.ticks.countOld = this.ticks.count;
-        
-        /*
-        // Check if there is actually anything to draw...
-        if (this.tickCount !== 0)
-        {
+        this.ticks.countOld = this.ticks.count; 
+
+        if (this.tickCount !== 0) {
                 // Calculate the step value between each tick.
                 tickStep = (this.ticks.end - this.ticks.start) / (this.ticks.count - 1);
                 gaugeSegmentStep = Math.abs(this.segmentStart - this.segmentEnd) / (this.ticks.count - 1);
-
-                for (i = 0; i <= this.ticks.count - 1; i ++)
+                
+                for (var i = 0; i <= this.ticks.count - 1; i ++)
                 {
-                        // Calculate the tick value, round it, stick it in html...
-                        //var htmlString = '<p class="tick-label">' + addCommas(numberPrecision((i * tickStep), this.ticks.labelPrecision)) + '</p>';
-                        htmlString = '<p id="' + this.id + '-tick-label-' + i + '" class="tick-label">' + prefixNumber(this.ticks.start + i * tickStep, false) + '</p>';
-                        
-                        
-                        // Add the tick label...
-                        $('#' + this.id).append(htmlString);
-                        
                         // Calculate the position of the tick label...
-                        leftOffset = this.centerX + this.needle.xOffset - $('#' + this.id + ' .tick-label').getHiddenDimensions().w / 2;
-                        topOffset = this.centerY + this.needle.yOffset - $('#' + this.id + ' .tick-label').getHiddenDimensions().h / 2;
-                        tickLabelCssLeft = Math.round((this.ticks.labelRadius * Math.cos((this.segmentStart + (i * gaugeSegmentStep)) * Math.PI / 180)) + leftOffset) + 'px';
-                        tickLabelCssTop = Math.round(this.ticks.labelRadius * Math.sin(Math.PI / 180 * (this.segmentStart + (i * gaugeSegmentStep))) + topOffset) + 'px';
+                        leftOffset = this.centerX + 0;
+                        topOffset = this.centerY + 40;
+                        tickLabelCssLeft = Math.round((this.ticks.labelRadius * Math.cos((this.segmentStart + (i * gaugeSegmentStep)) * Math.PI / 180)) + leftOffset);
+                        tickLabelCssTop = Math.round(this.ticks.labelRadius * Math.sin(Math.PI / 180 * (this.segmentStart + (i * gaugeSegmentStep))) + topOffset);
                         
-                        $('#' + this.id + ' p:last').css({'left': tickLabelCssLeft, 'top': tickLabelCssTop});
+                        
+                        this.ticks.tickLabel = this.paper.text(tickLabelCssLeft, tickLabelCssTop, this.prefixNumber(this.ticks.start + i * tickStep, false))
+                        .attr({'font-size': this.label.fontSize, 'fill': 'red', 'font-weight': 'bold', 'font-family': 'Arial,Helvetica,sans-serif'});
+                       
+                        this.ticks.tickLabel.id = this.id + '-tick-label-' + i;
                 }
-
-                // Tick labels are all created, so reveal them together.
-                $('#' + this.id + ' .tick-label').fadeIn('slow');
         }
         */
-}
+        
+//        removeElement(this.id + '-ticks-label');
+        
+        for (var i = 0; i <= this.ticks.countOld - 1; i ++) {
+        	removeElement(this.id + '-tick-label');
+        }
+        
+        this.ticks.countOld = this.ticks.count; 
+        
+        if (this.ticks.count !== 0 ) {
+        	c = document.createElement('canvas');
+            c.setAttribute('id', this.id + '-tick-label');
+            this.root.appendChild(c);
+            
+            // Reference the canvas element we just created.
+            canvas = document.getElementById(this.id + '-tick-label');
+        if (canvas.getContext)
+        {
+        	tickStep = (this.ticks.end - this.ticks.start) / (this.ticks.count - 1);
+            
+        	// use getContext to use the canvas for drawing
+            ctx = canvas.getContext('2d');
+            
+            // Draw ticks
+            gaugeSegmentStep = Math.abs(this.segmentStart - this.segmentEnd) / (this.ticks.count - 1);
+            ctx.strokeStyle = this.ticks.color;
+            ctx.lineWidth = 1;
+                
+
+			for (var i = 0; i <= this.ticks.count - 1; i++) {
+				startAngle = (Math.PI / 180) * (this.segmentStart + (gaugeSegmentStep * i) - (this.ticks.thickness / 2));
+				endAngle = (Math.PI / 180) * (this.segmentStart + (gaugeSegmentStep * i) + (this.ticks.thickness / 2));
+	
+				leftOffset = this.centerX + 0;
+				topOffset = this.centerY + 40;
+				tickLabelCssLeft = Math.round((this.ticks.labelRadius * Math.cos((this.segmentStart + (i * gaugeSegmentStep)) * Math.PI/ 180))+ leftOffset);
+				tickLabelCssTop = Math.round(this.ticks.labelRadius* Math.sin(Math.PI / 180* (this.segmentStart + (i * gaugeSegmentStep)))+ topOffset);
+	
+				ctx.fillStyle = this.ticks.color;
+				ctx.font = 'bold 10px Arial,Helvetica,sans-serif';
+				ctx.textBaseline = 'middle';
+				ctx.fillText(this.prefixNumber(this.ticks.start + i * tickStep, false), tickLabelCssLeft, tickLabelCssTop);
+			}
+        }
+        else {
+            // Canvas not supported!
+            if (this.showAlerts === true)
+            {
+                    alert('Sorry, canvas is not supported by your browser!');
+            }
+        }
+
+        }
+       
+};
 
 
 /**
@@ -572,8 +631,8 @@ jGauge.prototype.setValue = function(newValue, needleObject)
         var degreesMult;
         var valueDegrees;
         var htmlString;
-        var needleCssLeft;
-        var needleCssTop;
+//        var needleCssLeft;
+//        var needleCssTop;
         
         // First set the internal value variable (so we can return if required).
         this.value = newValue;
@@ -617,7 +676,7 @@ jGauge.prototype.setValue = function(newValue, needleObject)
         // Update the main label (and apply any SI / binary prefix)...
         htmlString = this.prefixNumber(newValue, true);
         this.label.rText.attr('text', htmlString);
-}
+};
 
 
 /**
@@ -628,7 +687,7 @@ jGauge.prototype.setValue = function(newValue, needleObject)
 jGauge.prototype.getValue = function()
 {
         return this.value;
-}
+};
 
 
 /**
@@ -680,7 +739,7 @@ jGauge.prototype.prefixNumber = function(value, formatting)
         {
                 return addCommas(numberPrecision(value, this.label.precision)) + prefix;
         }
-}
+};
 
 
 /**
@@ -731,7 +790,7 @@ jGauge.prototype.findUpperLimit = function(value, multiple)
                 // parseInt is used to ensure there aren't any wierd float decimals (i.e. 4.999~ instead of 5).
                 return parseInt(bump * Math.pow(10, power), 10);
         }
-}
+};
 
 
 
